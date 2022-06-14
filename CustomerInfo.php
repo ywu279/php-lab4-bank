@@ -16,15 +16,17 @@
     $emailErr = "";
     $contactErr = "";
     $timeErr = "";
+    $errors = array();
 
     if(isset($next)) //if the page is requested due to the form submission, NOT the first time request
     {
-        $nameErr = ValidateName($name);
-        $postcodeErr = ValidatePostalCode($postcode);
-        $phoneErr = ValidatePhone($phone);
-        $emailErr = ValidateEmail($email);
-        $contactErr = ValidateContact($contact);
-        $timeErr = ValidateTime($contact, $time);
+
+        $errors[] = $nameErr = ValidateName($name);
+        $errors[] = $postcodeErr = ValidatePostalCode($postcode);
+        $errors[] = $phoneErr = ValidatePhone($phone);
+        $errors[] = $emailErr = ValidateEmail($email);
+        $errors[] = $contactErr = ValidateContact($contact);
+        $errors[] = $timeErr = ValidateTime($contact, $time);
 
         if(!$nameErr && !$postcodeErr && !$phoneErr && !$emailErr && !$contactErr && !$timeErr)
         {
@@ -40,12 +42,12 @@
     }
 
     //if the data has been stored in the session, display/precheck the data on the page when the user enters this page
-    $nameValue = $_SESSION["name"] ?? "";
-    $postcodeValue = $_SESSION["postcode"] ?? "";
-    $phoneValue = $_SESSION["phone"] ?? "";
-    $emailValue = $_SESSION["email"] ?? "";
-    $contact = $_SESSION["contact"] ?? "phone";
-    $time = $_SESSION["time"] ?? "";
+    $nameValue = $name ?? "";
+    $postcodeValue = $postcode ?? "";
+    $phoneValue = $phone ?? "";
+    $emailValue = $email ?? "";
+    $contact = $contact ?? "phone";
+    $time = $time ?? "";
 
 
     include("./Common/Header.php");

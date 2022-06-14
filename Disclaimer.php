@@ -2,7 +2,7 @@
     session_start(); //start PHP session!
     extract($_POST);
     $termErr = "";
-
+    $checked = "";
     if(isset($start)) //check if the page is requested due to the form submission, NOT the first time request
     {
         if(isset($termCheck))  //e.g. $check_value = isset($_POST['my_checkbox_name']) ? 1 : 0;
@@ -53,7 +53,7 @@
                 <?php echo $termErr ?>
             </div>
             <div class="form-check form-check-inline">
-                <input type="checkbox" id="termCheck" name="termCheck" class="form-check-input" checked="<?php echo $checked; ?>">
+                <input type="checkbox" id="termCheck" name="termCheck" class="form-check-input" <?php echo $checked; ?>>
                 <label for="termCheck" class="form-check-label">I have read and agree with the terms and conditions</label>
             </div>
         </div>
