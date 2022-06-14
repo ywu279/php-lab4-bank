@@ -24,11 +24,12 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="Welcome.php">Home</a></li>
-            <li><a href="Step1SelectCPU.php">Select CPU</a></li>
-            <li><a href="Step2SelectMemory.php">Select RAM</a></li>
-            <li><a href="Step3Review.php">Review</a></li>
-            <li><a href="Step4Finish.php">Finish</a></li>          </ul>
+            <li class="active"><a href="Index.php">Home</a></li>
+            <li><a href="Disclaimer.php">Term and Conditions</a></li>
+            <li><a href="CustomerInfo.php">Customer Infomation</a></li>
+            <li><a href="DepositCalculator.php">Calculator</a></li>
+            <li><a href="Complete.php">Complete</a></li>
+          </ul>
         </div>
       </div>  
     </nav>
