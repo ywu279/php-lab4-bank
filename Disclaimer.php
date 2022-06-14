@@ -1,11 +1,11 @@
 <?php
-    session_start();
+    session_start(); //start PHP session!
     extract($_POST);
     $termErr = "";
 
     if(isset($start)) //check if the page is requested due to the form submission, NOT the first time request
     {
-        if(isset($termCheck))
+        if(isset($termCheck))  //e.g. $check_value = isset($_POST['my_checkbox_name']) ? 1 : 0;
         {
             $_SESSION["termCheck"] = $termCheck;
             header("Location: CustomerInfo.php");
@@ -16,12 +16,14 @@
             $termErr = "You must agree the terms and conditions!";
         }
     }
-//    else {
-//        if(isset($_SESSION["term"]))
-//        {
-//            $term = $_SESSION["term"];
-//        }
-//    }
+    else
+    {
+        if(isset($_SESSION["termCheck"]))
+        {
+            $termCheck = $_SESSION["termCheck"];
+            $checked = "checked"; //if the data has been stored in the session, checkbox will be prechecked
+        }
+    }
 
     include("./Common/Header.php");
 ?>
@@ -45,13 +47,13 @@
             </td>
         </tr>
     </table>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">  <!--form can be submitted to the same page itself to display error msg-->
         <div class="form-group">
             <div class="text-danger">
                 <?php echo $termErr ?>
             </div>
             <div class="form-check form-check-inline">
-                <input type="checkbox" id="termCheck" name="termCheck" class="form-check-input">
+                <input type="checkbox" id="termCheck" name="termCheck" class="form-check-input" checked="<?php echo $checked; ?>">
                 <label for="termCheck" class="form-check-label">I have read and agree with the terms and conditions</label>
             </div>
         </div>
