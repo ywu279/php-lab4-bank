@@ -157,17 +157,17 @@
         }
     }
 
-    function ValidateRate($amount): string
+    function ValidateRate($rate): string
     {
-        if(!trim($amount))
+        if(trim($rate) == "")
         {
             return "Interest rate can not be blank";
         }
-        elseif(!is_numeric($amount))
+        elseif(!is_numeric($rate))
         {
             return "Interest rate must be numeric";
         }
-        elseif($amount < 0)
+        elseif($rate < 0)
         {
             return "Interest rate must be non-negative";
         }
