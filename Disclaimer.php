@@ -18,6 +18,7 @@
     }
     else
     {
+        //is the same as: $termCheck = $_SESSION["termCheck"] ?? "";
         if(isset($_SESSION["termCheck"]))
         {
             $termCheck = $_SESSION["termCheck"];

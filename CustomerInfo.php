@@ -10,26 +10,31 @@
 
     extract($_POST);
 
+    $contactMethod_1 = "";
+    $contactMethod_2 = "";
+    $contactTime_1 = "";
+    $contactTime_2 = "";
+    $contactTime_3 = "";
+
     $nameErr = "";
     $postcodeErr = "";
     $phoneErr = "";
     $emailErr = "";
     $contactErr = "";
     $timeErr = "";
-    $errors = array();
 
     if(isset($next)) //if the page is requested due to the form submission, NOT the first time request
     {
-
-        $errors[] = $nameErr = ValidateName($name);
-        $errors[] = $postcodeErr = ValidatePostalCode($postcode);
-        $errors[] = $phoneErr = ValidatePhone($phone);
-        $errors[] = $emailErr = ValidateEmail($email);
-        $errors[] = $contactErr = ValidateContact($contact);
-        $errors[] = $timeErr = ValidateTime($contact, $time);
+        $nameErr = ValidateName($name);
+        $postcodeErr = ValidatePostalCode($postcode);
+        $phoneErr = ValidatePhone($phone);
+        $emailErr = ValidateEmail($email);
+        $contactErr = ValidateContact($contact);
+        $timeErr = ValidateTime($contact, $time);
 
         if(!$nameErr && !$postcodeErr && !$phoneErr && !$emailErr && !$contactErr && !$timeErr)
         {
+            //store data in session
             $_SESSION["name"] = $name;
             $_SESSION["postcode"] = $postcode;
             $_SESSION["phone"] = $phone;
@@ -40,54 +45,77 @@
             header("Location: DepositCalculator.php");
         }
     }
-
-    //if the data has been stored in the session, display/precheck the data on the page when the user enters this page
-    $nameValue = $name ?? "";
-    $postcodeValue = $postcode ?? "";
-    $phoneValue = $phone ?? "";
-    $emailValue = $email ?? "";
-    $contact = $contact ?? "phone";
-    $time = $time ?? "";
-
+    else
+    {
+        //if the data has been stored in the session, display/pre-check the data on the page when the user enters this page again
+        $name = $_SESSION["name"] ?? "";
+        $postcode = $_SESSION["postcode"] ?? "";
+        $phone = $_SESSION["phone"] ?? "";
+        $email = $_SESSION["email"] ?? "";
+        $contact = $_SESSION["contact"] ?? "phone";
+        if(isset($_SESSION["contact"]))
+        {
+            $contact = $_SESSION["contact"];
+            if($contact == "phone")
+            {
+                $contactMethod_1 = "checked";
+            }
+            elseif($contact == "email")
+            {
+                $contactMethod_2 = "checked";
+            }
+//            $contactMethod_1 = ($contact == "phone") ? "checked" : "";
+//            $contactMethod_2 = ($contact == "email") ? "checked" : "";
+        }
+        if(isset($_SESSION["time"]))
+        {
+            $time = $_SESSION["time"];
+            if(in_array("morning", (array)$time))
+            {
+                $contactTime_1 = "checked";
+            }
+            if(in_array("afternoon", (array)$time))
+            {
+                $contactTime_2 = "checked";
+            }
+            if(in_array("evening", (array)$time))
+            {
+                $contactTime_3 = "checked";
+            }
+//            $contactTime_1 = (in_array("morning", (array)$time)) ? "checked" : "";
+//            $contactTime_2 = (in_array("afternoon", (array)$time)) ? "checked" : "";
+//            $contactTime_3 = (in_array("evening", (array)$time)) ? "checked" : "";
+        }
+    }
 
     include("./Common/Header.php");
 
-    print <<<EOS
+    print <<<HTML
         <div class="container">
             <h1>Customer Information</h1>
             <hr>
             <form action="CustomerInfo.php" method="post">
                 <div class="row form-group form-inline">
                     <label for="name" class="col-md-2">Name: </label>
-                    <input type="text" id="name" name="name" class="form-control col-md-3" value="$nameValue">
+                    <input type="text" id="name" name="name" class="form-control col-md-3" value="$name">
                     <span class="errorMsg">$nameErr</span>
                 </div>
                 <div class="row form-group form-inline">
                     <label for="postcode" class="col-md-2">Postal Code: </label>
-                    <input type="text" id="postcode" name="postcode" class="form-control col-md-3" value="$postcodeValue">
+                    <input type="text" id="postcode" name="postcode" class="form-control col-md-3" value="$postcode">
                     <span class="errorMsg">$postcodeErr</span>
                 </div>
                 <div class="row form-group form-inline">
                     <label for="phone" class="col-md-2">Phone Number: <br>(nnn-nnn-nnnn)</label>
-                    <input type="text" id="phone" name="phone" class="form-control col-md-3" value="$phoneValue">
+                    <input type="text" id="phone" name="phone" class="form-control col-md-3" value="$phone">
                     <span class="errorMsg">$phoneErr</span>
                 </div>
                 <div class="row form-group form-inline">
                     <label for="email" class="col-md-2">Email Address: </label>
-                    <input type="text" id="email" name="email" class="form-control col-md-3" value="$emailValue">
+                    <input type="text" id="email" name="email" class="form-control col-md-3" value="$email">
                     <span class="errorMsg">$emailErr</span>
                 </div>
                 <hr>
-    EOS;
-
-    $contactMethod_1 = ($contact == "phone") ? "checked" : "";
-    $contactMethod_2 = ($contact == "email") ? "checked" : "";
-    $contactTime_1 = (in_array("morning", (array)$time)) ? "checked" : "";
-    $contactTime_2 = (in_array("afternoon", (array)$time)) ? "checked" : "";
-    $contactTime_3 = (in_array("evening", (array)$time)) ? "checked" : "";
-
-    print <<<EOS
-
                 <div class="row form-group form-inline">
                     <p class="col-md-2">Preferred contact Method: </p>
                     <div class="form-check col-md-1">
@@ -119,7 +147,7 @@
                 <button type="submit" name="next" class="btn btn-primary">Next ></button>
             </form>
         </div>
-    EOS;
+    HTML;
 
     function ValidateName($name): string
     {
