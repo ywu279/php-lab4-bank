@@ -1,4 +1,5 @@
 <?php
+    error_reporting(E_ALL ^ E_NOTICE); //specify All errors and warnings are displayed
     session_start(); //retrieve PHP session!
 //see if a previously saved variable $termCheck in the session data store is set or not
 //if resuming session fails （由于用户跳过Disclaimer直接通过URL进入该页或session expired的原因）, you should redirect the request to the disclaimer page.

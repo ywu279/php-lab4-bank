@@ -1,4 +1,5 @@
 <?php
+    error_reporting(E_ALL ^ E_NOTICE); //specify All errors and warnings are displayed
     session_start(); //start PHP session!
     extract($_POST);
     $termErr = "";
